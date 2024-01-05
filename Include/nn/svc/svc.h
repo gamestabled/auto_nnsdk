@@ -26,7 +26,7 @@ UNK_RETURN GetSystemTick();
 
 UNK_RETURN ControlMemory(unsigned int*, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
 
-UNK_RETURN ConnectToPort(nn::Handle*, char const*);
+Result ConnectToPort(nn::Handle*, char const*);
 
 UNK_RETURN GetProcessId(unsigned int*, nn::Handle);
 
@@ -43,6 +43,10 @@ UNK_RETURN CreateMutex(nn::Handle*, bool);
 UNK_RETURN CreateEvent(nn::Handle*, nn::os::ResetType);
 
 UNK_RETURN ExitThread();
+
+Result CloseHandle(Handle handle);
+
+Result SendSyncRequest(Handle handle);
 
 } // svc
 

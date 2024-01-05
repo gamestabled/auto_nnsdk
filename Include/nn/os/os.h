@@ -9,6 +9,20 @@ namespace nn {
 
 namespace os {
 
+struct StaticBufferTranslationDescriptor {
+};
+
+struct IPCStaticBuffer {
+    StaticBufferTranslationDescriptor translationDescriptor;
+    void* ptr;
+};
+
+struct ThreadLocalInfo {
+    char data[0x80];
+    char ipcCommand[0x100];
+    IPCStaticBuffer ipcStaticBuffers[0x10];
+};
+
 class StackMemoryBlock;
 
 class MemoryBlock;
@@ -191,7 +205,7 @@ UNK_RETURN Initialize();
 
 class CriticalSection {
 public:
-    ~CriticalSection();
+    ~CriticalSection() {}
 
     UNK_RETURN EnterImpl();
 
@@ -205,6 +219,10 @@ public:
 
         ~ScopedLock();
     };
+
+    s32 mLockVariable;
+    struct ThreadLocalInfo* mThreadLocalInfo;
+    s32 mLockCount;
 };
 
 class MemoryBlock {
@@ -250,17 +268,16 @@ public:
 
 } // LockPolicy
 
-namespace LightEvent {
+class LightEvent {
+public:
+    UNK_RETURN TryWait();
 
-UNK_RETURN TryWait();
+    UNK_RETURN Signal();
 
-UNK_RETURN Signal();
+    UNK_RETURN Wait();
 
-UNK_RETURN Wait();
-
-UNK_RETURN ClearSignal();
-
-} // LightEvent
+    UNK_RETURN ClearSignal();
+};
 
 UNK_RETURN Initialize();
 
