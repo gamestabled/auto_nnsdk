@@ -8,7 +8,7 @@ namespace dbg {
 
 class BreakReason;
 
-UNK_RETURN Panic();
+void Panic();
 
 UNK_RETURN Break(nn::dbg::BreakReason);
 
